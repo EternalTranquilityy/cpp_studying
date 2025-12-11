@@ -1,0 +1,156 @@
+﻿// test_vector.cpp 
+#include <iostream>
+#include <vector>
+#include<algorithm>
+#include<string>
+using namespace std;
+int main()
+{
+
+
+	//vector的基础使用
+	std::vector<int> vi;
+	vector<string> vs;
+	vector<float> vf;
+	vector<int> vd1(10); //设置数组大小
+	//初始化
+	vector<int> vd2{ 1,2,3,4,6 };
+	vector<string> vs1{ "ss1","ss2","ss3" };
+
+	//增加\删除\修改\查找
+	{
+		std::vector<int> datas;
+		datas.push_back(10); //结尾处插入内容
+		datas.push_back(11);
+		datas.push_back(12);
+		datas[0] = 99; //修改
+
+		//三种遍历
+		for (int i = 0; i < datas.size(); i++)
+			cout << datas[i] << " ";
+		cout << "\n";
+
+		//迭代器
+		std::vector<int>::iterator itr = datas.begin();
+		for (auto itr = datas.begin();itr != datas.end();itr++)
+			cout << *itr << ",";
+
+		cout << "\n";
+		//c++11 
+		for (auto& d : datas)
+		{
+			cout << d << "|";
+		}
+		cout << "\n";
+	}
+	{
+		//vector 搜索 删除 插入
+		std::vector<int> datas{
+			7,2,3,6,5,6,7,8,0,10,
+			5,12,3312,334,11 };
+		auto f = find(datas.begin(), datas.end(), 7);
+		if (f != datas.end())
+		{
+			cout << "find " << *f << " in "
+				<< f - datas.begin() << endl;
+			datas.erase(f); //删除元素
+		}
+		f = find(datas.begin(), datas.end(), 3312);
+		datas.insert(f, 3311); //指定位置插入
+		datas.insert(datas.begin() + 2, 99);// 第三个位置插入
+		//查找fdata
+		int fdata = 6;
+		vector<int> datapos;
+		for (int i = datas.size() - 1; i >= 0; i--)
+		{
+			if (datas[i] == fdata)
+			{
+				datapos.push_back(i);
+			}
+		}
+		for (auto p : datapos)
+			cout << p << " ";
+		cout << "\n";
+		//删除所有找到的fdata
+		for (auto p : datapos)
+		{
+			datas.erase(datas.begin() + p);
+		}
+		for (auto d :datas)
+		{
+			cout << d << "-";
+		}
+
+		cout << endl;
+		//正序
+		std::sort(datas.begin(), datas.end());
+		for (auto d : datas)
+			cout << d << "-";
+		cout << endl;
+
+		//倒序
+		std::sort(datas.begin(), datas.end(),
+			greater<int>());
+		for (auto d : datas)
+			cout << d << "-";
+		cout << endl;
+	}
+
+	//////////////////////////////////////////////////////////////////
+	//vector的效率 内存
+	{
+		vector<int> v1;
+		vector<int> vdata(10);
+		cout << "v1.size()" << v1.size() << endl; //size()存储元素数量
+		cout << "vdata.size()" << vdata.size() << endl;
+
+		cout << "v1.capacity():" << v1.capacity() << endl;//实际存储空间
+		cout << "vdata.capacity():" << vdata.capacity() << endl;//实际存储空间
+		v1.resize(8);	//扩充元素数量 初始化对象
+		v1.reserve(16);	//扩充内存数量 只扩充内存
+		cout << "v1.size():" << v1.size() << endl;//实际存储空间
+		cout << "v1.capacity():" << v1.capacity() << endl;//实际存储空间
+		v1.push_back(99);
+		for (auto v : v1)
+			cout << v << "|";
+		cout << endl;
+		v1.clear(); //清空元素
+		//内存适应元素 有多少元素就分配多少内存
+		v1.shrink_to_fit();
+
+		cout << "v1.size():" << v1.size() << endl;//实际存储空间
+		cout << "v1.capacity():" << v1.capacity() << endl;//实际存储空间
+		cout << "----------------\n";
+		int c = 0;
+		//元素空间动态变化
+		for (int i = 0; i < 200; i++)
+		{
+			v1.push_back(i);
+			if (c != v1.capacity())
+			{
+				cout << "v1.capacity():" << c << endl;//实际存储空间
+			}
+			c = v1.capacity();
+		}
+	}
+
+	//////////////////////////////////////////////////////////////////
+	//vector插入元素的效率
+	{
+
+		vector<string> vs;
+		//结尾处插入元素
+		//1"test" 转为string 对象
+		//2 vs内部分配string对象空间
+		//3 复制一份string存入vs??
+		//3 现代版本移动一份存入vs
+		vs.push_back(string("test"));
+		//1 vs内部分配string对象空间
+		//2直接讲string对象创建在分配的空间中
+		vs.emplace_back(string("test"));
+		vs.push_back("test");
+		vs.emplace_back("test");
+		vs.emplace_back(); //创建了一个string对象
+	}
+
+}

@@ -41,18 +41,18 @@ int main()
 
 		//栈区数组空间只能用编译时常量
 		int size = 5;
-		const int csize = 5;
+		const int csize = 5; // const 变量， 编译时常量， 作用是防止修改变量值
 		const int csize2 = size; //运行时常量
-		constexpr int cesize = 5;
+		constexpr int cesize = 5; // constexpr 变量， 编译时常量， 作用是防止修改变量值
 		int arr3[csize];
 		int arr4[cesize];
 
 		//数组的初始化
-		int arr5[10] = { 1,2,3,4,5 };
-		int arr6[] = { 3,4,5,6,7,8 };
-		char arr7[] = "test string";
+		int arr5[10] = { 1,2,3,4,5 }; // 10个元素的数组，初始化为1,2,3,4,5， 后面的元素用0填充
+		int arr6[] = { 3,4,5,6,7,8 }; // 自动计算元素数量， 等价于int arr6[6] = { 3,4,5,6,7,8 };
+		char arr7[] = "test string"; // 自动计算元素数量， 等价于char arr7[11] = "test string";
 		cout << "sizeof(arr6) = " << sizeof(arr6) << endl;
-		cout << "sizeof(arr7) = " << sizeof(arr7) << endl;
+		cout << "sizeof(arr7) = " << sizeof(arr7) << endl; // 12， 包含了结尾的\0
 
 		//数组是地址连续的空间
 		//数组遍历存放的数组首地址
@@ -64,7 +64,7 @@ int main()
 		cout << "arr1 + 2 = " << (long long)(arr1 + 2) << endl;
 		cout << "arr1 + 3 = " << (long long)(arr1 + 3) << endl;
 
-		cout << "*(arr1 + 2) = " << *(arr1 + 2) << endl;
+		cout << "*(arr1 + 2) = " << *(arr1 + 2) << endl; // 88， 相当于arr1[2]
 
 
 
@@ -84,13 +84,13 @@ int main()
 			cout << arr3[i] << "|";
 		}
 		cout << endl;
-		delete[] arr1; arr1 = nullptr;
+		delete[] arr1; arr1 = nullptr; // 释放数组空间
 		delete[] arr2; arr2 = nullptr;
 		delete[] arr3; arr3 = nullptr;
 
 		int arr5[5] = { 1,2,3,4,5 };
-		auto* arr6 = new int[5];
-		memcpy(arr6, arr5, sizeof(arr5));
+		auto* arr6 = new int[5]; // 动态分配数组， 语法是new 类型[元素数量]
+		memcpy(arr6, arr5, sizeof(arr5)); // 拷贝数组，语法是memcpy(目的地址， 源地址， 字节数)，等于arr6 = arr5;
 		for (int i = 0; i < 5; i++)
 			cout << arr6[i] << "-";
 		cout << endl;
