@@ -9,21 +9,21 @@ int main()
 
 
 	//vector的基础使用
-	std::vector<int> vi;
-	vector<string> vs;
+	std::vector<int> vi; //用了using namespace std就不需要std::
+	vector<string> vs; 
 	vector<float> vf;
 	vector<int> vd1(10); //设置数组大小
 	//初始化
-	vector<int> vd2{ 1,2,3,4,6 };
+	vector<int> vd2{ 1,2,3,4,6 }; //vd2 的元素个数为5，初始化为1,2,3,4,6
 	vector<string> vs1{ "ss1","ss2","ss3" };
 
 	//增加\删除\修改\查找
 	{
-		std::vector<int> datas;
+		vector<int> datas;
 		datas.push_back(10); //结尾处插入内容
 		datas.push_back(11);
-		datas.push_back(12);
-		datas[0] = 99; //修改
+		datas.push_back(12); //datas为{10,11,12}
+		datas[0] = 99; //修改，datas为{99,11,12}
 
 		//三种遍历
 		for (int i = 0; i < datas.size(); i++)
@@ -31,15 +31,32 @@ int main()
 		cout << "\n";
 
 		//迭代器
-		std::vector<int>::iterator itr = datas.begin();
+		vector<int>::iterator itr = datas.begin(); 
+		// vector<int>::iterator itr：声明了一个名为itr的迭代器，该迭代器用于遍历vector<int>类型的容器。
+		// datas.begin()：返回一个指向容器datas第一个元素的迭代器。datas是一个vector<int>类型的对象。
 		for (auto itr = datas.begin();itr != datas.end();itr++)
+		/*
+			auto itr = datas.begin()：使用auto关键字自动推导迭代器的类型，
+			并初始化为指向容器datas第一个元素的迭代器。
+			itr != datas.end()：datas.end()返回一个指向容器datas最后一个元素之后位置的迭代器。
+			循环条件是itr不等于datas.end()，即只要itr还没有到达容器的末尾，循环就会继续。
+			itr++：每次循环迭代后，迭代器itr会递增到下一个元素。
+		*/
 			cout << *itr << ",";
+			//在循环体内，*itr用于解引用迭代器，获取迭代器所指向的元素的值，
+			//并将其输出到标准输出（通常是控制台）。然后输出一个逗号,作为分隔符。
 
 		cout << "\n";
 		//c++11 
 		for (auto& d : datas)
+		/*
+		auto& d：auto&关键字用于自动推导变量d的类型，并将其声明为引用类型。
+		这样可以避免复制元素，提高效率。
+		d的类型会被推导为int&，因为datas是vector<int>类型的容器。
+: 		datas：表示循环将遍历datas容器中的每一个元素
+		*/
 		{
-			cout << d << "|";
+			cout << d << "|"; //使用cout将当前元素d的值输出到标准输出（通常是控制台），并在每个元素后面输出一个竖线|作为分隔符。
 		}
 		cout << "\n";
 	}
@@ -48,7 +65,11 @@ int main()
 		std::vector<int> datas{
 			7,2,3,6,5,6,7,8,0,10,
 			5,12,3312,334,11 };
-		auto f = find(datas.begin(), datas.end(), 7);
+		auto f = find(datas.begin(), datas.end(), 5);
+		/*
+		#include <algorithm> // 必须包含这个头文件
+		auto 迭代器 = find(容器起始位置, 容器结束位置, 要查找的值);
+		*/
 		if (f != datas.end())
 		{
 			cout << "find " << *f << " in "
